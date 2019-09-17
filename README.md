@@ -27,6 +27,11 @@ cd sensors_balloon
 
 make
 
+if the virtual environment does not start:
+
+source ./bin/activate
+
+
 ## install the requirements
 
 pip3 install -e ./
@@ -38,8 +43,7 @@ pip3 install -r requirements-freeze.txt
 pip3 install -e ./
 
 
-
-## Or manually:
+# Or manually:
 
 Create and activate Virtual Environment
 ---------------------------------------
