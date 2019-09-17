@@ -19,7 +19,13 @@ source ./bin/activate
 
 ##install the requirements
 
-pip3cd  install -r requirements-freeze.txt
+pip install -e ./
+
+if that does not work try :
+
+pip3 install -r requirements-freeze.txt
+
+pip install -e ./
 
 
 
