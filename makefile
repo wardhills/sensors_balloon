@@ -1,3 +1,3 @@
 venv:
-	python -m venv sensors
+	python3 -m venv sensors
 	
