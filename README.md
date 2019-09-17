@@ -27,7 +27,7 @@ cd sensors_balloon
 
 make
 
-##install the requirements
+## install the requirements
 
 pip3 install -e ./
 
