@@ -27,21 +27,19 @@ cd sensors_balloon
 
 make
 
-source ./bin/activate
-
 ##install the requirements
 
-pip install -e ./
+pip3 install -e ./
 
 if that does not work try :
 
 pip3 install -r requirements-freeze.txt
 
-pip install -e ./
+pip3 install -e ./
 
 
 
-##Or manually:
+## Or manually:
 
 Create and activate Virtual Environment
 ---------------------------------------
