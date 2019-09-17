@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
-VERSION="0.1.0.dev0"
+VERSION="0.1.0.1"
 
 setup(
-    name="Sensors-Balloon",
+    name="Sensors_Balloon",
     version=VERSION,
     packages=find_packages("src"),
     package_dir={'': 'src'},
