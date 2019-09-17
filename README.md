@@ -9,11 +9,23 @@ sudo apt-get update
 
 sudo apt-get upgrade
 
-##Fetch the repo
+install pip and venv  (may be needed on Lite versions of Raspbian)
+
+sudo apt-get install python3-pip
+
+sudo pip3 install --upgrade setuptools
+
+sudo apt-get install python3-venv
+
+
+## Fetch the repo
+
 git clone git@github.com:albioninnovate/sensors_balloon.git
 
-##create and activate the virtual environment
-make makefile
+## create and activate the virtual environment
+cd sensors_balloon
+
+make
 
 source ./bin/activate
 
