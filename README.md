@@ -9,15 +9,21 @@ sudo apt-get update
 
 sudo apt-get upgrade
 
+##Fetch the repo
 git clone git@github.com:albioninnovate/sensors_balloon.git
 
+##create and activate the virtual environment
 make makefile
 
-pip install -r requirements-freeze.txt
+source ./bin/activate
+
+##install the requirements
+
+pip3cd  install -r requirements-freeze.txt
 
 
 
-***Or manually:
+##Or manually:
 
 Create and activate Virtual Environment
 ---------------------------------------
