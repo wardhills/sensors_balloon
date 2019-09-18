@@ -3,6 +3,7 @@ import board
 import busio
 from adafruit_as726x import Adafruit_AS726x
 import adafruit_fxas21002c
+import adafruit_fxos8700
 import adafruit_sht31d
 
 
@@ -15,26 +16,27 @@ Accelerometer
 """
 
 # Initialize I2C bus and all sensors.
-i2c = busio.I2C(board.SCL, board.SDA)
+#i2c = busio.I2C(board.SCL, board.SDA)
 
 def intilize_sensors():
     light = Adafruit_AS726x(i2c)
     accelerometer = init_accelerometer(i2c)
     gyroscope = init_gyro(i2c)
     TempHum = adafruit_sht31d.SHT31D(i2c)
+
     return light, accelerometer, gyroscope, TempHum
 
 #todo add try loops around each to ensure that it one does not initilise all the others are still avaiable
 
-def read_light(light=light):
-    light.conversion_mode = light.MODE_2
+def read_light(sensor):
+    sensor.conversion_mode = sensor.MODE_2
 
-    v = light.violet
-    b = light.blue
-    g = light.green
-    y = light.yellow
-    o = light.orange
-    r = light.red
+    v = sensor.violet
+    b = sensor.blue
+    g = sensor.green
+    y = sensor.yellow
+    o = sensor.orange
+    r = sensor.red
 
     return v,b,g,y,o,r
 
@@ -51,7 +53,7 @@ def init_gyro(i2c):
     return gyroscope
 
 
-def read_gyroscope(sensor=gyroscope):
+def read_gyroscope(sensor):
     #read the gyroscope values every second as a default and print them out.
     # Read gyro.
     gyro_x, gyro_y, gyro_z = sensor.gyroscope
@@ -73,7 +75,7 @@ def init_accelerometer(i2c):
     return sensor
 
 
-def read_accelerometer(sensor=accelerometer):
+def read_accelerometer(sensor):
     # Read acceleration & magnetometer.
     accel_x, accel_y, accel_z = sensor.accelerometer
     mag_x, mag_y, mag_z = sensor.magnetometer
@@ -84,7 +86,7 @@ def read_accelerometer(sensor=accelerometer):
     return accel_x, accel_y, accel_z
 
 
-def read_TempHum(sensor=TempHum):
+def read_TempHum(sensor):
     print("\nTemperature: %0.1f C" % sensor.temperature)
     print("Humidity: %0.1f %%" % sensor.relative_humidity)
 
@@ -101,13 +103,25 @@ def read_TempHum(sensor=TempHum):
     return temp, hum
 
 if __name__ == '__main__':
-    intilize_sensors()
+    i2c = busio.I2C(board.SCL, board.SDA)
+    print('i2c = ', i2c)
 
-    read_accelerometer()
-    read_gyroscope()
-    read_light()
-    read_TempHum()
+#    light, accelerometer, gyroscope, TempHum = intilize_sensors()
+#    print(light, accelerometer, gyroscope, TempHum)
+
+    try:
+        light = Adafruit_AS726x(i2c)
+    except:
+        light_on = 0
+        
+    accelerometer = init_accelerometer(i2c)
+    gyroscope = init_gyro(busio.I2C(board.SCL, board.SDA))
+    TempHum = adafruit_sht31d.SHT31D(i2c)
+
+
+    read_accelerometer(accelerometer)
+    read_gyroscope(gyroscope)
+#    read_light(light)
+    read_TempHum(TempHum)
 
     #todo write the values to a csv file in a partucular directory
-
-
