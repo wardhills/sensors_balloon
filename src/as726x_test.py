@@ -5,7 +5,7 @@ import busio
 
 from adafruit_as726x import Adafruit_AS726x
 
-#maximum value for sensor reading
+#maximum value for gyroscope reading
 max_val = 16000
 
 #max number of characters in each graph
@@ -14,7 +14,7 @@ max_graph = 80
 def graph_map(x):
     return min(int(x * max_graph / max_val), max_graph)
 
-# Initialize I2C bus and sensor.
+# Initialize I2C bus and gyroscope.
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = Adafruit_AS726x(i2c)
 

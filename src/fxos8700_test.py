@@ -8,10 +8,10 @@ import adafruit_fxos8700
 # Initialize I2C bus and device.
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_fxos8700.FXOS8700(i2c)
-# Optionally create the sensor with a different accelerometer range (the
+# Optionally create the gyroscope with a different accelerometer range (the
 # default is 2G, but you can use 4G or 8G values):
-#sensor = adafruit_fxos8700.FXOS8700(i2c, accel_range=adafruit_fxos8700.ACCEL_RANGE_4G)
-#sensor = adafruit_fxos8700.FXOS8700(i2c, accel_range=adafruit_fxos8700.ACCEL_RANGE_8G)
+#gyroscope = adafruit_fxos8700.FXOS8700(i2c, accel_range=adafruit_fxos8700.ACCEL_RANGE_4G)
+#gyroscope = adafruit_fxos8700.FXOS8700(i2c, accel_range=adafruit_fxos8700.ACCEL_RANGE_8G)
 
 # Main loop will read the acceleration and magnetometer values every second
 # and print them out.

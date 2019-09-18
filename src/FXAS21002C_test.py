@@ -11,11 +11,11 @@ import adafruit_fxas21002c
 # Initialize I2C bus and device.
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_fxas21002c.FXAS21002C(i2c)
-# Optionally create the sensor with a different gyroscope range (the
+# Optionally create the gyroscope with a different gyroscope range (the
 # default is 250 DPS, but you can use 500, 1000, or 2000 DPS values):
-#sensor = adafruit_fxas21002c.FXAS21002C(i2c, gyro_range=adafruit_fxas21002c.GYRO_RANGE_500DPS)
-#sensor = adafruit_fxas21002c.FXAS21002C(i2c, gyro_range=adafruit_fxas21002c.GYRO_RANGE_1000DPS)
-#sensor = adafruit_fxas21002c.FXAS21002C(i2c, gyro_range=adafruit_fxas21002c.GYRO_RANGE_2000DPS)
+#gyroscope = adafruit_fxas21002c.FXAS21002C(i2c, gyro_range=adafruit_fxas21002c.GYRO_RANGE_500DPS)
+#gyroscope = adafruit_fxas21002c.FXAS21002C(i2c, gyro_range=adafruit_fxas21002c.GYRO_RANGE_1000DPS)
+#gyroscope = adafruit_fxas21002c.FXAS21002C(i2c, gyro_range=adafruit_fxas21002c.GYRO_RANGE_2000DPS)
 
 # Main loop will read the gyroscope values every second and print them out.
 while True:
