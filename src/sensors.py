@@ -102,26 +102,56 @@ def read_TempHum(sensor):
 
     return temp, hum
 
+
+
 if __name__ == '__main__':
     i2c = busio.I2C(board.SCL, board.SDA)
     print('i2c = ', i2c)
+    sensors = []
 
 #    light, accelerometer, gyroscope, TempHum = intilize_sensors()
 #    print(light, accelerometer, gyroscope, TempHum)
 
+
     try:
         light = Adafruit_AS726x(i2c)
+        sensors.append('light')
     except:
-        light_on = 0
-        
-    accelerometer = init_accelerometer(i2c)
-    gyroscope = init_gyro(busio.I2C(board.SCL, board.SDA))
-    TempHum = adafruit_sht31d.SHT31D(i2c)
+        pass
 
+    try:
+        accelerometer = init_accelerometer(i2c)
+        sensors.append('accelerometer')
+    except:
+        pass
 
-    read_accelerometer(accelerometer)
-    read_gyroscope(gyroscope)
-#    read_light(light)
-    read_TempHum(TempHum)
+    try:
+        gyroscope = init_gyro(busio.I2C(board.SCL, board.SDA))
+        sensors.append('gyroscope')
+    except:
+        pass
+ 
+    try:
+        TempHum = adafruit_sht31d.SHT31D(i2c)
+        sensors.append('TempHum')
+    except:
+        pass
+
+    print(sensors)
+
+    while True:
+
+         if 'accelerometer' in sensors:
+             read_accelerometer(accelerometer)
+
+         if 'gyroscope' in sensors:
+             read_gyroscope(gyroscope)
+
+         if 'light' in sensors:
+             read_light(light)
+
+         if 'TempHum' in sensors:
+             read_TempHum(TempHum)
 
     #todo write the values to a csv file in a partucular directory
+
