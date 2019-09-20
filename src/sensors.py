@@ -118,6 +118,8 @@ def read_temphum(sensor):
 
     print("\nTemperature: %0.1f C" % sensor.temperature)
     print("Humidity: %0.1f %%" % sensor.relative_humidity)
+    temp = sensor.temperature
+    hum = sensor.relative_humidity
 
     # every 10 passes turn on the heater for 1 second
 
@@ -128,10 +130,6 @@ def read_temphum(sensor):
     # time.sleep(1)
     # sensor.heater = False
     # #print("Sensor Heater status =", sensor.heater)
-
-    temp = sensor.temperature
-    hum = sensor.relative_humidity
-
     return temp, hum
 
 
@@ -160,14 +158,13 @@ def write_file(data, fname , path='./', headings=headings):
         print(e)
         pass
 
-
 if __name__ == '__main__':
-
     i2c = busio.I2C(board.SCL, board.SDA)
     sensors =['light', 'accelerometer','gyroscope','TempHum']
 
    # sensors = []
     headings = []
+    data_values = []
 
     light, accelerometer, gyroscope, TempHum, sensors = intilize_sensors()
     print(light, accelerometer, gyroscope, TempHum, sensors)
@@ -200,15 +197,15 @@ if __name__ == '__main__':
 
          if 'accelerometer' in sensors:
              read_accelerometer(accelerometer)
+             data_values.append(read_accelerometer(accelerometer))
 
          if 'gyroscope' in sensors:
-             read_gyroscope(gyroscope)
+             data_values.append(read_gyroscope(gyroscope))
 
          if 'light' in sensors:
-             read_light(light)
+             data_values.append(read_light(light))
 
          if 'TempHum' in sensors:
-             read_TempHum(TempHum)
+             data_values.append(read_TempHum(TempHum))
 
     #todo write the values to a csv file in a partucular directory
-
