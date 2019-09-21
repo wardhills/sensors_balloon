@@ -5,6 +5,10 @@ from adafruit_as726x import Adafruit_AS726x
 import adafruit_fxas21002c
 import adafruit_fxos8700
 import adafruit_sht31d
+import datetime
+import csv
+import os
+from itertools import chain
 
 """
 types of sensors 
@@ -115,7 +119,6 @@ def read_accelerometer(sensor):
 
 
 def read_temphum(sensor):
-
     print("\nTemperature: %0.1f C" % sensor.temperature)
     print("Humidity: %0.1f %%" % sensor.relative_humidity)
     temp = sensor.temperature
@@ -133,9 +136,9 @@ def read_temphum(sensor):
     return temp, hum
 
 
-def write_file(data, fname , path='./', headings=headings):
+def write_file(data, fname ,headings, path='./'):
     now = datetime.datetime.now()
-    today = now.strftime("%Y%m%d")
+    today = now.strftime("%Y%m%d%H%M")
 
     # TODO make method for constructing the full path with file type exention
     full_name = fname+today+'.csv'
@@ -160,52 +163,75 @@ def write_file(data, fname , path='./', headings=headings):
 
 if __name__ == '__main__':
     i2c = busio.I2C(board.SCL, board.SDA)
-    sensors =['light', 'accelerometer','gyroscope','TempHum']
+    #sensors =['light', 'accelerometer','gyroscope','TempHum']
 
-   # sensors = []
+    sensors = []
     headings = []
     data_values = []
+    delay = 10
+    
+    try:
+        light = Adafruit_AS726x(i2c)
+        sensors.append('light')
+    except:
+        pass
+    
+    try:
+         accelerometer = init_accelerometer(i2c)
+         sensors.append('accelerometer')
+    except:
+         pass
+    
+    try:
+        gyroscope = init_gyro(busio.I2C(board.SCL, board.SDA))
+        sensors.append('gyroscope')
+    except:
+        pass
+    
+    try:
+        temphum = adafruit_sht31d.SHT31D(i2c)
+        sensors.append('temphum')
+    except:
+        pass
 
-    light, accelerometer, gyroscope, TempHum, sensors = intilize_sensors()
-    print(light, accelerometer, gyroscope, TempHum, sensors)
-
-    # try:
-    #     light = Adafruit_AS726x(i2c)
-    #     sensors.append('light')
-    # except:
-    #     pass
-    #
-    # try:
-    #     accelerometer = init_accelerometer(i2c)
-    #     sensors.append('accelerometer')
-    # except:
-    #     pass
-    #
-    # try:
-    #     gyroscope = init_gyro(busio.I2C(board.SCL, board.SDA))
-    #     sensors.append('gyroscope')
-    # except:
-    #     pass
-    #
-    # try:
-    #     TempHum = adafruit_sht31d.SHT31D(i2c)
-    #     sensors.append('TempHum')
-    # except:
-    #     pass
+    print(sensors)
 
     while True:
+        
 
-         if 'accelerometer' in sensors:
-             read_accelerometer(accelerometer)
+        if 'accelerometer' in sensors:
              data_values.append(read_accelerometer(accelerometer))
-
-         if 'gyroscope' in sensors:
+             headings.append(('accel_x', 'accel_y', 'accel_z', 'mag_x', 'mag_y', 'mag_z'))
+             
+        if 'gyroscope' in sensors:
              data_values.append(read_gyroscope(gyroscope))
-
-         if 'light' in sensors:
+             headings.append(('gyro_x', 'gyro_y', 'gyro_z'))
+             
+        if 'light' in sensors:
              data_values.append(read_light(light))
+             headings.append(('v','b','g','y','o','r'))
 
-         if 'TempHum' in sensors:
-             data_values.append(read_TempHum(TempHum))
+        if 'temphum' in sensors:
+             data_values.append(read_temphum(temphum))
+             headings.append(('t','h'))
 
+        #print(data_values)
+        #print(headings)
+        data_list= list(chain.from_iterable(data_values))
+        headings_list= list(chain.from_iterable(headings))
+        
+        data_list.append(str(datetime.datetime.now()))
+        headings_list.append('time')
+        print(headings_list)
+        print(data_list)
+        
+
+        #todo  clean up the data by converting the tuples to list and croping the floats
+        write_file(data_list,"flt_data",headings_list)
+        #todo add a second write; a telemetry csv, need to pop the values not wanted for transmission
+        data_values = []  # remove the values now stored in the csv files
+        time.sleep(delay)
+        print('-------------\n')
+        print('\n')
+         
     #todo write the values to a csv file in a partucular directory
