@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/pi/code/sensors_balloon/sensors"
+VIRTUAL_ENV="/home/pi/test/sensors_balloon/sensors"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

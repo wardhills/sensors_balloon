@@ -157,6 +157,7 @@ def write_file(data, fname ,headings, path='./'):
     # TODO make method for constructing the full path with file type exention
     full_name = fname+today+'.csv'
     full_path = path+full_name
+    print("full_path ", full_path)
 
     try:
         if os.path.isfile(full_path):
@@ -164,6 +165,8 @@ def write_file(data, fname ,headings, path='./'):
                 wr = csv.writer(f, quoting=csv.QUOTE_ALL)
                 wr.writerow(data)
             return
+       
+        open(full_path, 'a').close()
 
         with open(full_path, 'w', newline='') as f:
             wr = csv.writer(f, quoting=csv.QUOTE_ALL)

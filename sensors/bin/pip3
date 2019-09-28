@@ -1,4 +1,4 @@
-#!/home/pi/code/sensors_balloon/sensors/bin/python3
+#!/home/pi/test/sensors_balloon/sensors/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
