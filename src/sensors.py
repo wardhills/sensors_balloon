@@ -234,16 +234,17 @@ if __name__ == '__main__':
              if first_pass == True:
                  headings.append(('t','h'))
 
-        #print(data_values)
-        #print(headings)
-        data_list= list(chain.from_iterable(data_values))
-        headings_list= list(chain.from_iterable(headings))
+        print('data_values = ',data_values)
+        data_list = list(chain.from_iterable(data_values))    #list of lists to a simple list
+        print('data_list = ',data_list)
+        print('headings = ',headings)
+        headings_list = list(chain.from_iterable(headings))   #list of list to a simple list
+        print('headings_list = ',headings_list)
 
         data_list.append(datetime.datetime.now().replace(microsecond=0).isoformat())
         headings_list.append('time')
-        print(headings_list)
-        print(data_list)
-
+        #print(headings_list)
+        #print(data_list)
 
         #todo  clean up the data by converting the tuples to list and croping the floats
         write_file(data_list,"flt_data",headings_list,data_path)
