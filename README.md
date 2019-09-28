@@ -26,11 +26,8 @@ git clone git@github.com:albioninnovate/sensors_balloon.git
 cd sensors_balloon
 
 make
-
-if the virtual environment does not start:
-
 source ./bin/activate
-
+mkdir data
 
 ## install the requirements
 
