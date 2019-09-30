@@ -186,7 +186,9 @@ if __name__ == '__main__':
     headings = []
     data_values = []
     delay = 10
-    data_path = '../data/'
+#    data_path = '../data/'
+    data_path = '/home/pi/sensors_balloon/data/'
+
     first_pass = True
     
     try:
