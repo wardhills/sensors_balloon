@@ -155,7 +155,7 @@ def write_file(data, fname ,headings, path='./'):
     today = now.strftime("%Y%m%d")
 
     # TODO make method for constructing the full path with file type exention
-    full_name = fname+today+'.csv'
+    full_name = fname+'.csv'
     full_path = path+full_name
     print("full_path ", full_path)
 
@@ -186,8 +186,8 @@ if __name__ == '__main__':
     headings = []
     data_values = []
     delay = 10
-#    data_path = '../data/'
-    data_path = '/home/pi/sensors_balloon/data/'
+    #data_path = '/home/pi/sensors_balloon/'
+    data_path = 'home/pi/'
 
     first_pass = True
     
@@ -239,10 +239,10 @@ if __name__ == '__main__':
              if first_pass == True:
                  headings.append(('t','h'))
 
-        print('data_values = ',data_values)
+#        print('data_values = ',data_values)
         data_list = list(chain.from_iterable(data_values))    #list of lists to a simple list
-        print('data_list = ',data_list)
-        print('headings = ',headings)
+ #       print('data_list = ',data_list)
+#        print('headings = ',headings)
         headings_list = list(chain.from_iterable(headings))   #list of list to a simple list
         print('headings_list = ',headings_list)
 
@@ -252,7 +252,7 @@ if __name__ == '__main__':
         #print(data_list)
 
         #todo  clean up the data by converting the tuples to list and croping the floats
-        write_file(data_list,"flt_data",headings_list,data_path)
+        write_file(data_list,"data",headings_list,data_path)
         #todo add a second write; a telemetry csv, need to pop the values not wanted for transmission
         data_values = []  # remove the values now stored in the csv files
         time.sleep(delay)
