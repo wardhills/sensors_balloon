@@ -1,0 +1,11 @@
+[Unit]
+Description=Sensors Balloon service
+ 
+[Service]
+Type=exec
+User=pi
+ExecStart=/home/pi/sensors_balloon/sens_strt.sh
+ 
+[Install]
+WantedBy=multi-user.target
+Alias=sensors_balloon.service
