@@ -162,14 +162,15 @@ def write_file(data, fname ,headings, path='./'):
     try:
         if os.path.isfile(full_path):
             with open(full_path, 'a', newline='') as f:
-                wr = csv.writer(f, quoting=csv.QUOTE_ALL)
+                wr = csv.writer(f, quoting=csv.QUOTE_NONE)
                 wr.writerow(data)
             return
        
-        open(full_path, 'a').close()
+        open(full_path, 'ab').close()
 
-        with open(full_path, 'w', newline='') as f:
+        with open(full_path, 'wb', newline='') as f:
             wr = csv.writer(f, quoting=csv.QUOTE_ALL)
+            #wr =csv.writer(f, quoting=csv.QUOTE_NONE)
             wr.writerow(headings)
             return
 
@@ -187,7 +188,7 @@ if __name__ == '__main__':
     data_values = []
     delay = 10
     #data_path = '/home/pi/sensors_balloon/'
-    data_path = 'home/pi/'
+    data_path = '/home/pi/'
 
     first_pass = True
     
@@ -246,13 +247,15 @@ if __name__ == '__main__':
         headings_list = list(chain.from_iterable(headings))   #list of list to a simple list
         print('headings_list = ',headings_list)
 
-        data_list.append(datetime.datetime.now().replace(microsecond=0).isoformat())
+        data_list.append(datetime.datetime.now().timestamp())
         headings_list.append('time')
+        data_list_float = [float(x) for x in data_list]       # convert any strings to floats 
         #print(headings_list)
         #print(data_list)
+        print(data_list_float)
 
         #todo  clean up the data by converting the tuples to list and croping the floats
-        write_file(data_list,"data",headings_list,data_path)
+        write_file(data_list_float,"data",headings_list,data_path)
         #todo add a second write; a telemetry csv, need to pop the values not wanted for transmission
         data_values = []  # remove the values now stored in the csv files
         time.sleep(delay)
