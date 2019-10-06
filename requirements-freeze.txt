@@ -14,7 +14,7 @@ python-tsl2591==0.2.0
 rpi-ws281x==4.2.2
 RPi.GPIO==0.7.0
 semver==2.8.1
--e git+git@github.com:albioninnovate/sensors_balloon.git@2d5a51b8f47744edecf42167c42822f16b0da9a6#egg=Sensors_Balloon
+-e git+git@github.com:albioninnovate/sensors_balloon.git@9bf8aaec0a00c0fd2aae78f9fcca455e20607a73#egg=Sensors_Balloon
 smbus2==0.3.0
 spidev==3.4
 sysv-ipc==1.0.0
