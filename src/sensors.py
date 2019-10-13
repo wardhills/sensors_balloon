@@ -249,6 +249,8 @@ if __name__ == '__main__':
 
         data_list.append(datetime.datetime.now().timestamp())
         headings_list.append('time')
+	data_list.append('')
+	headings_list.append('')  #PITS adds a string to the data sentance, this space avoids it being added to the timestamp
         data_list_float = [float(x) for x in data_list]       # convert any strings to floats 
         #print(headings_list)
         #print(data_list)
