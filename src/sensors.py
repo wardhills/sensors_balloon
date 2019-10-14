@@ -3,11 +3,12 @@
 import time
 import board
 import busio
-from adafruit_as726x import Adafruit_AS726x
+#from adafruit_as726x import Adafruit_AS726x
 import adafruit_fxas21002c
 import adafruit_fxos8700
 import adafruit_sht31d
-from python_tsl2591 import tsl2591
+#from python_tsl2591 import tsl2591
+import adafruit_tsl2591
 import datetime
 import csv
 import os
@@ -19,49 +20,6 @@ Light
 Gyroscope
 Accelerometer 
 """
-
-def intilize_sensors():
-
-    try:
-        light = Adafruit_AS726x(i2c)
-        sensors.append('light')
-    except:
-        pass
-
-    try:
-        accelerometer = init_accelerometer(i2c)
-        sensors.append('accelerometer')
-    except:
-        pass
-
-    try:
-        gyroscope = init_gyro(busio.I2C(board.SCL, board.SDA))
-        sensors.append('gyroscope')
-    except:
-        pass
-
-    try:
-        TempHum = adafruit_sht31d.SHT31D(i2c)
-        sensors.append('TempHum')
-    except:
-        pass
-
-    return light, accelerometer, gyroscope, TempHum, sensors
-
-#todo add try loops around each to ensure that it one does not initilise all the others are still avaiable
-
-def read_light(sensor):
-
-    sensor.conversion_mode = sensor.MODE_2
-
-    v = sensor.violet
-    b = sensor.blue
-    g = sensor.green
-    y = sensor.yellow
-    o = sensor.orange
-    r = sensor.red
-
-    return v,b,g,y,o,r
 
 
 def init_gyro(i2c,dps=250):
@@ -154,14 +112,21 @@ def read_temphum(sensor):
 
 
 def read_tsl(sensor, gain=1, intergration_t=1):
-    sensor.set_gain(gain)
-    sensor.set_timing(intergration_t)
-    full, ir = sensor.get_full_luminosity()  # Read raw values (full spectrum and infared spectrum).
-    lux = sensor.calculate_lux(full, ir)  # Convert raw values to Lux.
+    #sensor.set_gain(gain)
+#    sensor.gain = gain
+    #sensor.set_timing(intergration_t)
+ #   sensor.intergration = intergration_t
+    #full, ir = sensor.get_full_luminosity()  # Read raw values (full spectrum and infared spectrum).
+    #full, ir =sensor.luminosity()
+#    lux = sensor.calculate_lux(full, ir)  # Convert raw values to Lux.
+    visible = sensor.visible
+    infrared = sensor.infrared
+    lux = sensor.lux
+     
 
-    print(lux,full, ir)
+    print(lux,visible, infrared)
 
-    return lux, full , ir
+    return lux, visible , infrared
 
 def write_file(data, fname ,headings, path='./'):
     now = datetime.datetime.now()
@@ -203,14 +168,7 @@ if __name__ == '__main__':
     #data_path = '/home/pi/sensors_balloon/'
     data_path = '/home/pi/'
 
-    first_pass = True
-    
-    try:
-        light = Adafruit_AS726x(i2c)
-        sensors.append('light')
-    except:
-        pass
-    
+    first_pass = True    
     try:
          accelerometer = init_accelerometer(i2c)
          sensors.append('accelerometer')
@@ -230,9 +188,11 @@ if __name__ == '__main__':
         pass
 
     try:
-        tsl = tsl2591()  # initialize
+        tsl = adafruit_tsl2591.TSL2591(i2c)  # initialize
         sensors.append('tsl')
-    except:
+    except Exception as e:
+        print('Error initializing  TSL2591')
+        print(e)
         pass
 
 
@@ -249,11 +209,6 @@ if __name__ == '__main__':
              data_values.append(read_gyroscope(gyroscope))
              if first_pass == True: 
                  headings.append(('gyro_x', 'gyro_y', 'gyro_z'))
-
-        if 'light' in sensors:
-             data_values.append(read_light(light))
-             if first_pass == True:
-                 headings.append(('v','b','g','y','o','r'))
 
         if 'temphum' in sensors:
              data_values.append(read_temphum(temphum))
@@ -275,8 +230,6 @@ if __name__ == '__main__':
 
         data_list.append(datetime.datetime.now().timestamp())
         headings_list.append('time')
-	data_list.append('')
-	headings_list.append('')  #PITS adds a string to the data sentance, this space avoids it being added to the timestamp
         data_list_float = [float(x) for x in data_list]       # convert any strings to floats 
         #print(headings_list)
         #print(data_list)
